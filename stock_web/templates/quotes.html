@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>行情查看</h1>
+    <p>支持按市场筛选与代码/名称模糊搜索，快速查看个股行情与K线。</p>
+</div>
+<div class="card-panel overview-toolbar quotes-toolbar">
+    <div class="toolbar-group">
+        <label for="quotes-market">市场</label>
+        <select id="quotes-market">
+            <option value="ALL">全部</option>
+            <option value="A">A股</option>
+            <option value="HK">港股</option>
+            <option value="US">美股</option>
+        </select>
+    </div>
+    <div class="toolbar-group">
+        <label for="quotes-source">行情源</label>
+        <select id="quotes-source">
+            <option value="auto">自动</option>
+            <option value="tickflow">TickFlow</option>
+            <option value="eastmoney">EastMoney</option>
+            <option value="sina">Sina</option>
+            <option value="tencent">Tencent</option>
+        </select>
+    </div>
+    <div class="toolbar-group quotes-search-group">
+        <label for="quotes-keyword">代码/名称</label>
+        <input type="text" id="quotes-keyword" placeholder="如 600519 / 00700.HK / AAPL / 贵州茅台">
+    </div>
+    <button id="quotes-search-btn" class="btn-primary">搜索</button>
+</div>
+<div class="card-panel">
+    <div class="section-header">
+        <h2>匹配股票</h2>
+        <span id="quotes-count">0 条</span>
+    </div>
+    <div id="quotes-hint">加载中...</div>
+    <table id="quotes-table">
+        <thead>
+            <tr>
+                <th>代码</th>
+                <th>名称</th>
+                <th>市场</th>
+                <th>行业</th>
+                <th>最新价</th>
+                <th>涨跌幅</th>
+                <th>来源</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<div class="stock-detail-panel card-panel">
+    <div class="detail-toolbar">
+        <h2 id="quotes-detail-title">股票行情详情</h2>
+        <span id="quotes-detail-meta">点击列表中的“查看行情”</span>
+    </div>
+    <div id="quotes-detail-content" class="quotes-detail-empty">请先从上方列表选择股票</div>
+    <div id="quotes-kline-chart" class="screener-kline-chart quotes-kline-chart is-empty"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+<script src="{{ url_for('static', filename='js/components/kline_chart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pages/quotes.js') }}"></script>
+{% endblock %}

@@ -42,7 +42,7 @@ class ConfigManager:
             "stamp_tax_rate": 0.001,
             "transfer_fee_rate": 0.00001,
             "min_transfer_fee": 1.0,
-            "data_sources": ["tickflow", "sina", "tencent"],
+            "data_sources": ["tickflow", "eastmoney", "sina", "tencent"],
             "use_mock_on_fail": True,
             "auto_trade_quantity": 1,
             "stop_loss_rate": 0.05,

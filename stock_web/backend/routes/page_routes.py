@@ -10,6 +10,10 @@ def register_page_routes(app, services):
     def screener_page():
         return render_template("screener.html")
 
+    @app.route("/quotes", endpoint="quotes_page")
+    def quotes_page():
+        return render_template("quotes.html")
+
     @app.route("/trade", endpoint="trade_page")
     def trade_page():
         return render_template("trade.html")

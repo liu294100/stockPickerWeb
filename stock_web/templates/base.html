@@ -21,6 +21,7 @@
         <aside class="sidebar">
             <a class="menu-item {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">市场总览</a>
             <a class="menu-item {% if request.endpoint == 'screener_page' %}active{% endif %}" href="{{ url_for('screener_page') }}">策略选股</a>
+            <a class="menu-item {% if request.endpoint == 'quotes_page' %}active{% endif %}" href="{{ url_for('quotes_page') }}">行情查看</a>
             <a class="menu-item {% if request.endpoint == 'watchlist_page' %}active{% endif %}" href="{{ url_for('watchlist_page') }}">自选池</a>
             <a class="menu-item {% if request.endpoint == 'news_page' %}active{% endif %}" href="{{ url_for('news_page') }}">资讯舆情</a>
             <a class="menu-item {% if request.endpoint == 'watchlist_news_page' %}active{% endif %}" href="{{ url_for('watchlist_news_page') }}">自选资讯</a>

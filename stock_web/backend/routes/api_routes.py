@@ -18,6 +18,14 @@ def register_api_routes(app, services):
         watchlist_only = request.args.get("watchlist") == "1"
         return jsonify(services.market_service.get_stock_pool(market=market, watchlist_only=watchlist_only))
 
+    @app.route("/api/stocks/search")
+    def search_stocks():
+        keyword = request.args.get("q", "")
+        market = request.args.get("market")
+        limit = request.args.get("limit", type=int) or 30
+        limit = max(5, min(limit, 100))
+        return jsonify(services.market_service.search_stocks(keyword=keyword, market=market, limit=limit))
+
     @app.route("/api/stocks", methods=["POST"])
     def upsert_stock():
         payload = request.json or {}
@@ -79,6 +87,16 @@ def register_api_routes(app, services):
         if not details.get("quote"):
             return jsonify({"error": "Stock not found"}), 404
         return jsonify(details)
+
+    @app.route("/api/stock/<code>/kline")
+    def get_stock_kline(code):
+        source = request.args.get("source")
+        if source == "auto":
+            source = None
+        limit = request.args.get("limit", type=int) or 90
+        limit = max(20, min(limit, 240))
+        data = services.market_service.get_daily_klines(code, source=source, limit=limit)
+        return jsonify({"code": code, "source": source or "auto", "items": data})
 
     @app.route("/api/news")
     def get_news():

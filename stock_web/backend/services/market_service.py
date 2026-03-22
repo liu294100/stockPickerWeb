@@ -71,21 +71,41 @@ class MarketService:
         self._seed_default_stocks()
 
     def get_quote(self, code: str, source: str | None = None):
-        source_order = [source] if source else self.config.get("settings.data_sources", ["tickflow", "sina", "tencent"])
-        for source in source_order:
-            if source == "tickflow":
+        source_order = [source] if source else self.config.get("settings.data_sources", ["tickflow", "eastmoney", "sina", "tencent"])
+        for source_name in source_order:
+            normalized_source = (source_name or "").strip().lower()
+            if normalized_source == "tickflow":
                 tickflow_quote = self.tickflow_manager.get_quote(code)
                 normalized_quote = self._normalize_tickflow_quote(code, tickflow_quote)
                 if normalized_quote:
                     return normalized_quote
-            if source in {"sina", "tencent"}:
-                quote = DataFetcher.get_realtime_quote(code)
+            if normalized_source in {"eastmoney", "sina", "tencent"}:
+                quote = DataFetcher.get_realtime_quote(code, preferred_source=normalized_source)
                 if quote:
                     self._fill_quote_name(code, quote)
                     return quote
-        quote = DataFetcher.get_realtime_quote(code)
+        quote = DataFetcher.get_realtime_quote(code, preferred_source="eastmoney")
         self._fill_quote_name(code, quote)
         return quote
+
+    def get_daily_klines(self, code: str, source: str | None = None, limit: int = 60):
+        source_order = [source] if source else self.config.get("settings.data_sources", ["tickflow", "eastmoney", "sina", "tencent"])
+        eastmoney_tried = False
+        for source_name in source_order:
+            normalized_source = (source_name or "").strip().lower()
+            if normalized_source == "tickflow":
+                klines = self.tickflow_manager.get_daily_klines(code, limit=limit)
+                if klines:
+                    return klines
+            if normalized_source in {"eastmoney", "sina", "tencent"}:
+                if normalized_source == "eastmoney":
+                    eastmoney_tried = True
+                klines = DataFetcher.get_daily_klines(code, source=normalized_source, limit=limit)
+                if klines:
+                    return klines
+        if not eastmoney_tried:
+            return DataFetcher.get_daily_klines(code, source="eastmoney", limit=limit)
+        return []
 
     def get_stock_pool(self, market: str | None = None, watchlist_only: bool = False):
         normalized_market = self._normalize_market(market)
@@ -100,6 +120,32 @@ class MarketService:
             }
             for item in stocks
         ]
+
+    def search_stocks(self, keyword: str, market: str | None = None, limit: int = 20):
+        text = (keyword or "").strip()
+        if not text:
+            return []
+        normalized_market = self._normalize_market(market)
+        local_rows = self.get_stock_pool(market=normalized_market, watchlist_only=False)
+        lowered = text.lower()
+        local_matches = []
+        for row in local_rows:
+            code = str(row.get("code") or "")
+            name = str(row.get("name") or "")
+            if lowered in code.lower() or lowered in name.lower():
+                local_matches.append(row)
+        remote_matches = self._search_stocks_from_sina(text, market=normalized_market, limit=max(limit * 2, 30))
+        merged = []
+        seen = set()
+        for row in local_matches + remote_matches:
+            code = str(row.get("code") or "").upper()
+            if not code or code in seen:
+                continue
+            seen.add(code)
+            merged.append(row)
+            if len(merged) >= max(5, min(limit, 100)):
+                break
+        return merged
 
     def upsert_stock(self, payload: dict):
         code = (payload.get("code") or "").strip().upper()
@@ -295,7 +341,7 @@ class MarketService:
         self._fill_quote_name(code, quote)
         capital_flow, capital_flow_error = self.tushare_manager.get_capital_flow(code)
         financial_data, financial_data_error = self.tushare_manager.get_financial_snapshot(code)
-        daily_klines = self.tickflow_manager.get_daily_klines(code, limit=30)
+        daily_klines = self.get_daily_klines(code, source=source, limit=60)
         source = quote.get("source", "未知") if quote else "未知"
         stock_meta = self.stock_store.get_stock(code.upper()) if code else None
         return {
@@ -422,6 +468,81 @@ class MarketService:
         current_name = quote.get("name")
         if not current_name or str(current_name).startswith("模拟"):
             quote["name"] = stock["name"]
+
+    def _search_stocks_from_sina(self, keyword: str, market: str = "ALL", limit: int = 30):
+        try:
+            headers = {"User-Agent": "Mozilla/5.0"}
+            url = f"https://suggest3.sinajs.cn/suggest/type=&key={quote_plus(keyword)}"
+            response = requests.get(url, timeout=4, headers=headers)
+            if response.status_code != 200:
+                return []
+            response.encoding = response.apparent_encoding or "utf-8"
+            content = response.text or ""
+            matched = re.search(r'var\s+suggestvalue="(.*)"\s*;', content, flags=re.S)
+            if not matched:
+                return []
+            body = (matched.group(1) or "").strip()
+            if not body:
+                return []
+            result = []
+            seen = set()
+            for raw in body.split(";"):
+                fields = [part.strip() for part in raw.split(",")]
+                if len(fields) < 5:
+                    continue
+                stock = self._parse_sina_suggest_row(fields)
+                if not stock:
+                    continue
+                if market != "ALL" and stock.get("market") != market:
+                    continue
+                code_key = str(stock.get("code") or "").upper()
+                if not code_key or code_key in seen:
+                    continue
+                seen.add(code_key)
+                result.append(stock)
+                if len(result) >= max(5, min(limit, 100)):
+                    break
+            return result
+        except Exception:
+            return []
+
+    def _parse_sina_suggest_row(self, fields: list[str]):
+        category = fields[1]
+        raw_code = fields[2]
+        name = fields[4] or raw_code
+        normalized_code = ""
+        normalized_market = ""
+        if category == "11":
+            if re.fullmatch(r"\d{6}", raw_code):
+                normalized_code = raw_code
+                normalized_market = "A"
+        elif category == "31":
+            if re.fullmatch(r"\d{3,5}", raw_code):
+                normalized_code = f"{raw_code.zfill(5)}.HK"
+                normalized_market = "HK"
+        elif category in {"41", "103"}:
+            code = (raw_code or "").upper()
+            if code:
+                normalized_code = code
+                normalized_market = "US"
+        if not normalized_code or not normalized_market:
+            return None
+        local_stock = self.stock_store.get_stock(normalized_code)
+        if local_stock:
+            return {
+                "code": local_stock["code"],
+                "name": local_stock["name"],
+                "industry": local_stock["industry"],
+                "market": local_stock["market"],
+                "watchlist": bool(local_stock["watchlist"]),
+            }
+        return {
+            "code": normalized_code,
+            "name": name,
+            "industry": "--",
+            "market": normalized_market,
+            "watchlist": False,
+        }
 
     def _build_screener_metrics(self, code: str, quote: dict, financial_data: dict | None):
         daily_basic = (financial_data or {}).get("daily_basic", {})

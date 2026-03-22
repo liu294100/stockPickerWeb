@@ -22,6 +22,7 @@
                 <select id="screener-source">
                     <option value="auto">自动</option>
                     <option value="tickflow">TickFlow</option>
+                    <option value="eastmoney">EastMoney</option>
                     <option value="sina">Sina</option>
                     <option value="tencent">Tencent</option>
                 </select>
@@ -101,6 +102,7 @@
                     <th>市场</th>
                     <th>来源</th>
                     <th>数据质量</th>
+                    <th>K线</th>
                     <th>自选</th>
                     <th>资讯</th>
                 </tr>
@@ -109,9 +111,18 @@
         </table>
         <div id="screener-pagination" class="screener-pagination"></div>
     </div>
+    <div class="screener-kline-panel">
+        <div class="screener-kline-header">
+            <h3 id="screener-kline-title">行情K线</h3>
+            <span id="screener-kline-meta">点击“查看K线”加载</span>
+        </div>
+        <div id="screener-kline-chart" class="screener-kline-chart"></div>
+    </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+<script src="{{ url_for('static', filename='js/components/kline_chart.js') }}"></script>
 <script src="{{ url_for('static', filename='js/pages/screener.js') }}"></script>
 {% endblock %}

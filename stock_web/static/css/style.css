@@ -682,6 +682,89 @@ th, td {
     gap: 10px;
 }
 
+.screener-kline-panel {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    background: #f8fafc;
+}
+
+.screener-kline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.screener-kline-header h3 {
+    margin: 0;
+}
+
+#screener-kline-meta {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.screener-kline-chart {
+    width: 100%;
+    min-height: 360px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.quotes-search-group {
+    flex: 1;
+    min-width: 260px;
+}
+
+.quotes-toolbar {
+    flex-wrap: wrap;
+}
+
+.quotes-toolbar #quotes-search-btn {
+    align-self: flex-end;
+}
+
+#quotes-hint {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+#quotes-count {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+#quotes-detail-content {
+    margin-bottom: 12px;
+}
+
+.quotes-detail-empty {
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+    padding: 12px;
+    color: var(--muted);
+    background: #f8fafc;
+}
+
+.quotes-kline-chart.is-empty {
+    min-height: 220px;
+}
+
+.quotes-kline-chart.is-empty::before {
+    content: "暂无K线，选择股票后加载";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 220px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
 @media (max-width: 980px) {
     .layout {
         grid-template-columns: 1fr;
