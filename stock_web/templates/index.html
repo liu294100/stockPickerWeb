@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>市场总览</h1>
+    <p>根据涨跌幅智能推荐，支持A股、港股、美股总览。</p>
+</div>
+<div class="card-panel overview-toolbar">
+    <div class="toolbar-group">
+        <label for="overview-market">市场</label>
+        <select id="overview-market">
+            <option value="ALL">全部</option>
+            <option value="A">A股</option>
+            <option value="HK">港股</option>
+            <option value="US">美股</option>
+        </select>
+    </div>
+</div>
+<div class="dashboard card-panel">
+    <div class="section-header">
+        <h2>涨跌幅推荐</h2>
+    </div>
+    <div class="recommend-grid">
+        <div>
+            <h3 class="recommend-title">涨幅领先</h3>
+            <div id="stock-list-gainers" class="recommend-market-list"></div>
+        </div>
+        <div>
+            <h3 class="recommend-title">跌幅关注</h3>
+            <div id="stock-list-losers" class="recommend-market-list"></div>
+        </div>
+    </div>
+</div>
+<div class="card-panel">
+    <div class="section-header">
+        <h2>市场热力图</h2>
+    </div>
+    <div id="overview-heatmap" class="heatmap-grid"></div>
+</div>
+<div class="stock-detail-panel card-panel" id="stock-detail-panel">
+    <div class="detail-toolbar">
+        <h2>股票详情</h2>
+        <div class="source-switcher">
+            <label for="quote-source">行情源</label>
+            <select id="quote-source">
+                <option value="auto">自动</option>
+                <option value="tickflow">TickFlow</option>
+                <option value="sina">Sina</option>
+                <option value="tencent">Tencent</option>
+            </select>
+        </div>
+    </div>
+    <div id="stock-detail-content">点击任意股票卡片查看实时行情、资金流与日K摘要。</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pages/index.js') }}"></script>
+{% endblock %}

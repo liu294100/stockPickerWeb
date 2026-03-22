@@ -1,0 +1,11 @@
+flask
+tushare
+requests
+pandas
+numpy
+mplfinance
+cryptography
+apscheduler
+twilio
+python-telegram-bot
+tickflow

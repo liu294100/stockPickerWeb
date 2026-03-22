@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>自选池</h1>
+    <p>支持本地持久化增删改，覆盖A股、港股、美股。</p>
+</div>
+<div class="card-panel overview-toolbar">
+    <div class="toolbar-group">
+        <label for="watchlist-market">市场</label>
+        <select id="watchlist-market">
+            <option value="ALL">全部</option>
+            <option value="A">A股</option>
+            <option value="HK">港股</option>
+            <option value="US">美股</option>
+        </select>
+    </div>
+    <div class="watchlist-toolbar-actions">
+        <a href="{{ url_for('watchlist_news_page') }}" class="btn-secondary btn-link">自选资讯</a>
+        <button id="open-stock-form" class="btn-secondary">新增股票</button>
+    </div>
+</div>
+<div class="card-panel stock-editor" id="stock-editor" style="display:none;">
+    <div class="screener-row">
+        <div class="form-group">
+            <label for="stock-code-input">代码</label>
+            <input type="text" id="stock-code-input" placeholder="如 600519 / 00700.HK / AAPL">
+        </div>
+        <div class="form-group">
+            <label for="stock-name-input">名称</label>
+            <input type="text" id="stock-name-input" placeholder="股票名称">
+        </div>
+        <div class="form-group">
+            <label for="stock-industry-input">行业</label>
+            <input type="text" id="stock-industry-input" placeholder="行业">
+        </div>
+        <div class="form-group">
+            <label for="stock-market-input">市场</label>
+            <select id="stock-market-input">
+                <option value="A">A股</option>
+                <option value="HK">港股</option>
+                <option value="US">美股</option>
+            </select>
+        </div>
+    </div>
+    <div class="screener-actions">
+        <button id="save-stock-btn" class="btn-primary">保存</button>
+        <button id="cancel-stock-btn" class="btn-secondary">取消</button>
+        <span id="stock-form-hint">可用于新增或更新代码对应信息。</span>
+    </div>
+</div>
+<div class="card-panel">
+    <div id="watchlist-grid" class="stock-grid"></div>
+</div>
+<div class="card-panel">
+    <div class="section-header">
+        <h2>自选热力图</h2>
+    </div>
+    <div id="watchlist-heatmap" class="heatmap-grid"></div>
+</div>
+<div class="stock-detail-panel card-panel" id="stock-detail-panel">
+    <div class="detail-toolbar">
+        <h2>股票详情</h2>
+        <div class="source-switcher">
+            <label for="quote-source">行情源</label>
+            <select id="quote-source">
+                <option value="auto">自动</option>
+                <option value="tickflow">TickFlow</option>
+                <option value="sina">Sina</option>
+                <option value="tencent">Tencent</option>
+            </select>
+        </div>
+    </div>
+    <div id="stock-detail-content">点击股票查看实时行情、财务资金流与日K摘要。</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pages/watchlist.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>系统设置</h1>
+    <p>配置数据源与消息推送渠道，支持微信 / WhatsApp / Telegram。</p>
+</div>
+<div class="settings-page card-panel">
+    
+    <form id="settings-form">
+        <div class="section">
+            <h2>消息推送</h2>
+            
+            <div class="form-group">
+                <label>微信 PushPlus Token</label>
+                <input type="text" name="wechat_token" value="{{ config.wechat_token }}">
+            </div>
+            
+            <div class="form-group">
+                <label>WhatsApp SID（Twilio）</label>
+                <input type="text" name="whatsapp_sid" value="{{ config.whatsapp_sid }}">
+            </div>
+            <div class="form-group">
+                <label>WhatsApp Token（Twilio）</label>
+                <input type="password" name="whatsapp_token" value="{{ config.whatsapp_token }}">
+            </div>
+            <div class="form-group">
+                <label>WhatsApp 发送号码</label>
+                <input type="text" name="whatsapp_from" value="{{ config.whatsapp_from }}">
+            </div>
+            <div class="form-group">
+                <label>WhatsApp 接收号码</label>
+                <input type="text" name="whatsapp_to" value="{{ config.whatsapp_to }}">
+            </div>
+            
+            <div class="form-group">
+                <label>Telegram Bot Token</label>
+                <input type="text" name="telegram_token" value="{{ config.telegram_token }}">
+            </div>
+            <div class="form-group">
+                <label>Telegram Chat ID</label>
+                <input type="text" name="telegram_chat_id" value="{{ config.telegram_chat_id }}">
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>数据源</h2>
+            <div class="form-group">
+                <label>TickFlow API Key</label>
+                <input type="password" name="tickflow_api_key" value="{{ config.tickflow_api_key }}">
+            </div>
+            <div class="form-group">
+                <label>Tushare Token</label>
+                <input type="text" name="tushare_token" value="{{ config.tushare_token }}">
+            </div>
+            <div class="form-group">
+                <label>行情源优先级（逗号分隔）</label>
+                <input type="text" name="settings.data_sources" value="{{ config.settings.data_sources | join(',') }}">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn-primary">保存设置</button>
+            <button type="button" id="test-notify" class="btn-secondary">测试消息</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pages/settings.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Assistant Pro Web</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="logo">Stock Assistant Pro</div>
+        <div class="topbar-right">
+            <span class="badge">Flask</span>
+            <span class="badge">WhatsApp</span>
+            <span class="badge">Telegram</span>
+        </div>
+    </header>
+    <div class="layout">
+        <aside class="sidebar">
+            <a class="menu-item {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">市场总览</a>
+            <a class="menu-item {% if request.endpoint == 'screener_page' %}active{% endif %}" href="{{ url_for('screener_page') }}">策略选股</a>
+            <a class="menu-item {% if request.endpoint == 'watchlist_page' %}active{% endif %}" href="{{ url_for('watchlist_page') }}">自选池</a>
+            <a class="menu-item {% if request.endpoint == 'news_page' %}active{% endif %}" href="{{ url_for('news_page') }}">资讯舆情</a>
+            <a class="menu-item {% if request.endpoint == 'watchlist_news_page' %}active{% endif %}" href="{{ url_for('watchlist_news_page') }}">自选资讯</a>
+            <a class="menu-item {% if request.endpoint == 'trade_page' %}active{% endif %}" href="{{ url_for('trade_page') }}">交易中心</a>
+            <a class="menu-item {% if request.endpoint == 'notify_center_page' %}active{% endif %}" href="{{ url_for('notify_center_page') }}">消息中心</a>
+            <a class="menu-item {% if request.endpoint == 'settings_page' %}active{% endif %}" href="{{ url_for('settings_page') }}">系统设置</a>
+        </aside>
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

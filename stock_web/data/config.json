@@ -1,0 +1,75 @@
+{
+  "version": "1.0.0",
+  "wechat_token": "",
+  "whatsapp_token": "",
+  "whatsapp_sid": "",
+  "whatsapp_from": "",
+  "whatsapp_to": "",
+  "telegram_token": "",
+  "telegram_chat_id": "",
+  "tushare_token": "",
+  "tickflow_api_key": "tk_c6cea52eb3ab429ab6fdd435391dc8a7",
+  "tushare_node": "http://118.178.243.149/dataapi",
+  "price_alerts": [],
+  "condition_alerts": [],
+  "account": {
+    "cash": 998899.0,
+    "positions": {
+      "000001": {
+        "name": "平安银行",
+        "shares": 100,
+        "cost": 11.01
+      }
+    }
+  },
+  "auto_account": {
+    "cash": 1000000,
+    "positions": {}
+  },
+  "trade_history": [
+    {
+      "action": "Buy",
+      "code": "000001",
+      "name": "平安银行",
+      "price": 10.96,
+      "shares": 100,
+      "amount": 1096.0,
+      "fee": 5.0,
+      "time": "2026-03-18 23:00:14"
+    }
+  ],
+  "settings": {
+    "quote_cache_time": 5,
+    "quote_cache_time_nontrade": 30,
+    "capital_cache_time": 30,
+    "minute_cache_time": 60,
+    "commission_rate": 0.00025,
+    "min_commission": 5.0,
+    "stamp_tax_rate": 0.001,
+    "transfer_fee_rate": 1e-05,
+    "min_transfer_fee": 1.0,
+    "data_sources": [
+      "sina",
+      "tencent",
+      "netease",
+      "sohu",
+      "baidu",
+      "163"
+    ],
+    "use_mock_on_fail": true,
+    "auto_trade_quantity": 1,
+    "stop_loss_rate": 0.05,
+    "take_profit_rate": 0.1,
+    "kline_period": "daily",
+    "kline_display_days": 60,
+    "realtime_chart_update_interval": 1,
+    "minute_periods": [
+      "1min",
+      "5min",
+      "15min",
+      "30min",
+      "60min"
+    ],
+    "auto_trade_auto_start": false
+  }
+}

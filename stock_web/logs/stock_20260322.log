@@ -1,0 +1,7 @@
+2026-03-22 11:36:22,684 - WARNING - Tencent fetch failed for TSLA: HTTPConnectionPool(host='127.0.0.1', port=7890): Read timed out. (read timeout=2)
+2026-03-22 11:45:59,032 - WARNING - Sina fetch failed for 000651: HTTPConnectionPool(host='127.0.0.1', port=7890): Read timed out. (read timeout=2)
+2026-03-22 11:47:06,029 - WARNING - Tencent fetch failed for AAPL: HTTPConnectionPool(host='127.0.0.1', port=7890): Read timed out. (read timeout=2)
+2026-03-22 11:59:35,882 - WARNING - Sina fetch failed for 300750: HTTPConnectionPool(host='127.0.0.1', port=7890): Read timed out. (read timeout=2)
+2026-03-22 12:00:04,349 - WARNING - Tencent fetch failed for 601012: HTTPConnectionPool(host='127.0.0.1', port=7890): Read timed out. (read timeout=2)
+2026-03-22 12:22:16,045 - WARNING - Tencent fetch failed for NVDA: HTTPConnectionPool(host='127.0.0.1', port=7890): Read timed out. (read timeout=2)
+2026-03-22 12:41:46,171 - WARNING - Sina fetch failed for 00700.HK: HTTPConnectionPool(host='127.0.0.1', port=7890): Read timed out. (read timeout=2)

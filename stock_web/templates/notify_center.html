@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>消息中心</h1>
+    <p>统一测试微信、WhatsApp、Telegram 三种推送渠道。</p>
+</div>
+<div class="card-panel">
+    <div class="form-group">
+        <label for="notify-message">消息内容</label>
+        <input type="text" id="notify-message" value="来自 Stock Assistant 的测试消息">
+    </div>
+    <div class="channel-group">
+        <label><input type="checkbox" class="notify-channel" value="wechat" checked> 微信</label>
+        <label><input type="checkbox" class="notify-channel" value="whatsapp" checked> WhatsApp</label>
+        <label><input type="checkbox" class="notify-channel" value="telegram" checked> Telegram</label>
+    </div>
+    <button id="send-notify" class="btn-primary">发送测试消息</button>
+    <pre id="notify-result" class="result-box"></pre>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pages/notify_center.js') }}"></script>
+{% endblock %}

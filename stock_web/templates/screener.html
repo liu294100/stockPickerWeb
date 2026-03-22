@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>策略选股</h1>
+    <p>支持按估值、增长、盈利能力和价格区间筛选股票。</p>
+</div>
+<div class="screener-page card-panel">
+    <div class="screener-form">
+        <div class="screener-row">
+            <div class="form-group">
+                <label for="screener-market">市场</label>
+                <select id="screener-market">
+                    <option value="ALL">全部</option>
+                    <option value="A">A股</option>
+                    <option value="HK">港股</option>
+                    <option value="US">美股</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="screener-source">行情源</label>
+                <select id="screener-source">
+                    <option value="auto">自动</option>
+                    <option value="tickflow">TickFlow</option>
+                    <option value="sina">Sina</option>
+                    <option value="tencent">Tencent</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="market-cap-min">总市值(亿) 最小值</label>
+                <input type="number" id="market-cap-min" value="" min="0" step="1" placeholder="留空不过滤">
+            </div>
+            <div class="form-group">
+                <label for="market-cap-max">总市值(亿) 最大值</label>
+                <input type="number" id="market-cap-max" value="" min="0" step="1" placeholder="留空不过滤">
+            </div>
+            <div class="form-group">
+                <label for="price-min">股价最小值</label>
+                <input type="number" id="price-min" value="" min="0" step="0.01" placeholder="留空不过滤">
+            </div>
+            <div class="form-group">
+                <label for="price-max">股价最大值</label>
+                <input type="number" id="price-max" value="" min="0" step="0.01" placeholder="留空不过滤">
+            </div>
+        </div>
+        <div class="screener-row">
+            <div class="form-group">
+                <label for="pe-max">PE 最大值</label>
+                <input type="number" id="pe-max" value="" min="0" step="0.1" placeholder="留空不过滤">
+            </div>
+            <div class="form-group">
+                <label for="pb-max">PB 最大值</label>
+                <input type="number" id="pb-max" value="" min="0" step="0.1" placeholder="留空不过滤">
+            </div>
+            <div class="form-group">
+                <label for="roe-min">ROE 最小值(%)</label>
+                <input type="number" id="roe-min" value="" min="0" step="0.1" placeholder="留空不过滤">
+            </div>
+            <div class="form-group">
+                <label for="gross-margin-min">毛利率最小值(%)</label>
+                <input type="number" id="gross-margin-min" value="" min="0" step="0.1" placeholder="留空不过滤">
+            </div>
+            <div class="form-group">
+                <label for="net-margin-min">净利率最小值(%)</label>
+                <input type="number" id="net-margin-min" value="" min="0" step="0.1" placeholder="留空不过滤">
+            </div>
+        </div>
+        <div class="screener-actions">
+            <button id="run-screener" class="btn-primary">运行选股</button>
+            <span id="screener-hint">港美股财务口径可能缺失，建议先按价格与涨跌幅筛选。</span>
+        </div>
+    </div>
+    <div class="screener-result">
+        <div class="screener-result-header">
+            <h2>选股结果</h2>
+            <div class="screener-result-tools">
+                <span id="screener-count">0 只股票符合条件</span>
+                <label for="screener-page-size">每页</label>
+                <select id="screener-page-size">
+                    <option value="10">10</option>
+                    <option value="20" selected>20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+        </div>
+        <table id="screener-table">
+            <thead>
+                <tr>
+                    <th>代码</th>
+                    <th>名称</th>
+                    <th>行业</th>
+                    <th>最新价</th>
+                    <th>涨跌幅</th>
+                    <th>PE</th>
+                    <th>PB</th>
+                    <th>ROE%</th>
+                    <th>毛利率%</th>
+                    <th>净利率%</th>
+                    <th>总市值(亿)</th>
+                    <th>市场</th>
+                    <th>来源</th>
+                    <th>数据质量</th>
+                    <th>自选</th>
+                    <th>资讯</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="screener-pagination" class="screener-pagination"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/pages/screener.js') }}"></script>
+{% endblock %}
