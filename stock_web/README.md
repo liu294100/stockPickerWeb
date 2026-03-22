@@ -1,55 +1,118 @@
 # Stock Assistant Web
 
-这是从 `daisuostock_pro_fixed.py` GUI 版本迁移到 Flask 的 Web 版本，支持多菜单页面与消息推送。
+Stock Assistant Web is a Flask-based stock analysis and paper-trading application.  
+It was migrated from a desktop GUI project into a browser-first workflow with multiple pages and integrated notification channels.
 
-## 功能
+## Language Versions
 
-- 实时行情：新浪/腾讯接口，失败自动降级模拟行情
-- 模拟交易：买入、卖出、持仓与盈亏统计
-- 消息推送：微信（PushPlus）、WhatsApp（Twilio）、Telegram
-- 多菜单界面：市场总览、自选池、资讯舆情、交易中心、消息中心、系统设置
+- English (default): [README.md](README.md)
+- 中文: [README.zh-CN.md](README.zh-CN.md)
+- 日本語: [README.ja.md](README.ja.md)
 
-## Python 3.13 路径使用
+## Project Overview
 
-你提供的 Python 路径是：
+This project provides:
 
-`E:\program files\Python\Python313`
+- Market overview dashboard (A-share, HK, US)
+- Watchlist management
+- News and sentiment feed
+- Strategy screener with pagination
+- Paper trading (buy/sell/positions)
+- Notification center and settings panel
 
-建议直接使用完整解释器路径运行，避免系统 PATH 冲突。
+## Key Features
 
-1. 安装依赖
+- Real-time quote fetch with source fallback
+- Multi-market gainers/losers recommendation blocks
+- News aggregation with timeline display
+- One-click watchlist actions from multiple pages
+- Built-in paper trading and PnL tracking
+- Configurable notifications:
+  - PushPlus
+  - Twilio WhatsApp
+  - Telegram
 
-```bash
-"E:\program files\Python\Python313\python.exe" -m pip install -r requirements.txt
+## Tech Stack
+
+- Python
+- Flask
+- SQLite (local data persistence)
+- Vanilla JS + jQuery
+- HTML templates + CSS
+
+## Quick Start
+
+### Option A: Beginner-friendly launcher (recommended)
+
+On Windows:
+
+```bat
+run.bat
 ```
 
-2. 启动应用
+The launcher will:
+
+- Detect local Python installations
+- Let you choose one by index if multiple are found
+- Install dependencies automatically
+- Start the app
+- Show Python download link when Python is missing
+
+On Linux/macOS:
 
 ```bash
-"E:\program files\Python\Python313\python.exe" app.py
+bash run.sh
 ```
 
-3. 浏览器访问
+### Option B: Manual setup
+
+1) Install dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+2) Run the app:
+
+```bash
+python app.py
+```
+
+3) Open in browser:
 
 `http://127.0.0.1:5000`
 
-## 配置项
+## Configuration
 
-在“系统设置”页面可配置：
+Go to the **Settings** page to configure:
 
-- Tushare Token
-- 微信 PushPlus Token
-- WhatsApp SID / Token / 发送号 / 接收号
-- Telegram Bot Token / Chat ID
+- Tushare token
+- PushPlus token
+- Twilio credentials and phone numbers
+- Telegram bot token and chat ID
 
-## 目录结构
+## Project Structure
 
-- `app.py`：Flask 主入口
-- `core/`：业务逻辑
-  - `data_fetcher.py`：行情获取
-  - `trade_engine.py`：交易引擎
-  - `notification.py`：推送渠道
-  - `config_manager.py`：配置管理
-- `templates/`：页面模板
-- `static/`：CSS 与 JavaScript
-- `data/`：配置与交易数据
+- `app.py`: Flask entrypoint
+- `backend/`: routes and service layer
+- `core/`: business logic and integrations
+- `templates/`: HTML pages
+- `static/`: JavaScript and CSS assets
+- `data/`: config and SQLite database
+- `run.bat`, `run_windows.ps1`, `run.sh`: startup scripts
+
+## Main Dependencies
+
+See `requirements.txt`:
+
+- flask
+- tushare
+- requests
+- pandas
+- numpy
+- mplfinance
+- cryptography
+- apscheduler
+- twilio
+- python-telegram-bot
+- tickflow
